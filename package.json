@@ -1,0 +1,16 @@
+{
+  "name": "objectdetection",
+  "version": "1.0.0",
+  "description": "A ready-to-use module using Tensorflow Object Detection pretrained models",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "libtf": "^0.3.0",
+    "opencv4nodejs": "git+https://github.com/hypersolution1/opencv4nodejs.git#peerdependency_opencv-build",
+    "sharp": "^0.23.0"
+  }
+}
