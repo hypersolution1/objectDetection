@@ -6,12 +6,11 @@ var cv = require('opencv4nodejs')
 var fs = require('fs')
 var readFileAsync = require('util').promisify(fs.readFile)
 
-var objdetect = require('.')
-
+var ObjDetect = require('.')
 
 ;(async () => {
 
-  await objdetect.init()
+  var objdetect = await ObjDetect()
 
   var imgsrc = await cv.imreadAsync(`/var/store/test/truck1-1.jpg`)
 
