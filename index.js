@@ -1,4 +1,4 @@
-var cv = require('opencv4nodejs')
+
 var sharp = require('sharp')
 
 var fs = require('fs')
@@ -13,13 +13,14 @@ module.exports = async function (opt = {}) {
   options = Object.assign({
     'gpu_memory_fraction': 0.10,
     'minimum_score': 0.3,
+    'model': 'ssd_inception_v2_coco_2018_01_28',
   }, opt)
 
   var model = TFModel({
     'gpu_memory_fraction': options.gpu_memory_fraction,
   })  
-  //await model.load(`${__dirname}/models/ssdlite_mobilenet_v2_coco_2018_05_09.pb`)
-  await model.load(`${__dirname}/models/ssd_inception_v2_coco_2018_01_28.pb`)
+  //await model.load(`${__dirname}/models/ssdlite_mobilenet_v2_coco_2018_05_09.pb`) // ssd_inception_v2_coco_2018_01_28
+  await model.load(`${__dirname}/models/${options.model}.pb`)
   var labelmap = JSON.parse(await readFileAsync(`${__dirname}/models/coco_labelmap.json`))
   var labels = {}
   for(var l of labelmap) {
@@ -44,7 +45,7 @@ module.exports = async function (opt = {}) {
   // }
 
   async function imgResize(img, width, height) {
-    var sharpresize = await sharp(img.getData(), {
+    var sharpresize = await sharp(await img.getDataAsync(), {
       raw: {
           width: img.cols,
           height: img.rows,
@@ -53,21 +54,25 @@ module.exports = async function (opt = {}) {
     })
     .resize({ width, height })
     .toBuffer({ resolveWithObject: true })
-    return new cv.Mat(sharpresize.data, sharpresize.info.height, sharpresize.info.width, cv.CV_8UC3)
+    return {
+      data: sharpresize.data, 
+      height: sharpresize.info.height, 
+      width: sharpresize.info.width, 
+    }
   }
 
   var detect = async function (img) {
-
+    
     var ratio = img.cols / img.rows
     var imginput = await imgResize(img, 300)
 
     var input = {
       "image_tensor": {
-        "dim": [1, imginput.rows, imginput.cols, 3],
-        "data": imginput.getData(),
+        "dim": [1, imginput.height, imginput.width, 3],
+        "data": imginput.data,
       },
       
-    }
+    } 
 
     var val = await model.execute(input, ["detection_boxes", "detection_scores", "num_detections", "detection_classes"])
 
