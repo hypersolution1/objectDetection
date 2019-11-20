@@ -19,7 +19,7 @@ var ObjDetect = require('.')
 
   //var objdetect = await ObjDetect(config)
   var objdetects = []
-  var init = 6
+  var init = 1
   while(init--) {
     objdetects.push(await ObjDetect(config))
   }
@@ -35,7 +35,7 @@ var ObjDetect = require('.')
   })))[0]
 
   var meantime = 0
-  var cnt = 100
+  var cnt = 10
   while(cnt--) {
     var hrstart = process.hrtime()
     //console.time('time')

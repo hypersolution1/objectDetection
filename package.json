@@ -10,7 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "libtf": "^0.3.0",
-    "opencv4nodejs": "git+https://github.com/hypersolution1/opencv4nodejs.git",
-    "sharp": "^0.23.0"
+    "opencv4nodejs": "git+https://github.com/hypersolution1/opencv4nodejs.git"
   }
 }

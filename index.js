@@ -1,5 +1,5 @@
 
-var sharp = require('sharp')
+var cv = require('opencv4nodejs')
 
 var fs = require('fs')
 var readFileAsync = require('util').promisify(fs.readFile)
@@ -44,21 +44,38 @@ module.exports = async function (opt = {}) {
   //   return img
   // }
 
-  async function imgResize(img, width, height) {
-    var sharpresize = await sharp(await img.getDataAsync(), {
-      raw: {
-          width: img.cols,
-          height: img.rows,
-          channels: 3
-      }
-    })
-    .resize({ width, height })
-    .toBuffer({ resolveWithObject: true })
+  // async function imgResize(img, width, height) {
+  //   var sharpresize = await sharp(await img.getDataAsync(), {
+  //     raw: {
+  //         width: img.cols,
+  //         height: img.rows,
+  //         channels: 3
+  //     }
+  //   })
+  //   .resize({ width, height })
+  //   .toBuffer({ resolveWithObject: true })
+  //   return {
+  //     data: sharpresize.data, 
+  //     height: sharpresize.info.height, 
+  //     width: sharpresize.info.width, 
+  //   }
+  // }
+
+  var imgResize = async function (img, square_size) {
+    var height = img.rows
+    var width = img.cols
+    var channel = img.channels
+
+    var ratio = square_size / Math.max(height, width)
+    var target_h = Math.floor(height * ratio)
+    var target_w = Math.floor(width * ratio)
+
+    var resized = await img.resizeAsync(target_h, target_w, 1, 1, cv.INTER_LINEAR)
     return {
-      data: sharpresize.data, 
-      height: sharpresize.info.height, 
-      width: sharpresize.info.width, 
-    }
+      data: resized.getData(), 
+      height: resized.rows, 
+      width: resized.cols, 
+    }    
   }
 
   var detect = async function (img) {
