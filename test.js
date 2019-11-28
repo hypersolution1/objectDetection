@@ -23,12 +23,12 @@ var ObjDetect = require('.')
 
   for(let obj of objs) {
     var score = (obj.score*100).toFixed(0)
-    imgsrc.drawRectangle(new cv.Point2(obj.ptmin[0], obj.ptmin[1]), 
-      new cv.Point2(obj.ptmax[0], obj.ptmax[1]), new cv.Vec3(0, 255, 0), 4)
+    imgsrc.drawRectangle(new cv.Point2(obj.x1, obj.y1), 
+      new cv.Point2(obj.x2, obj.y2), new cv.Vec3(0, 255, 0), 4)
     imgsrc.putText(`${obj.label} ${score}%`,
-      new cv.Point2(obj.ptmin[0], obj.ptmin[1] + 30), cv.FONT_HERSHEY_SIMPLEX, 1, new cv.Vec3(255, 255, 255), 5)      
+      new cv.Point2(obj.x1, obj.y1 + 30), cv.FONT_HERSHEY_SIMPLEX, 1, new cv.Vec3(255, 255, 255), 5)      
     imgsrc.putText(`${obj.label} ${score}%`,
-      new cv.Point2(obj.ptmin[0], obj.ptmin[1] + 30), cv.FONT_HERSHEY_SIMPLEX, 1, new cv.Vec3(0, 0, 0), 2) 
+      new cv.Point2(obj.x1, obj.y1 + 30), cv.FONT_HERSHEY_SIMPLEX, 1, new cv.Vec3(0, 0, 0), 2) 
   }
   await cv.imwriteAsync("out.jpg", imgsrc)
 

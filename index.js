@@ -107,6 +107,10 @@ module.exports = async function (opt = {}) {
           score,
           ptmin: [xmin*img.cols, ymin*img.rows],
           ptmax: [xmax*img.cols, ymax*img.rows],
+          x1: xmin*img.cols,
+          y1: ymin*img.rows,
+          x2: xmax*img.cols,
+          y2: ymax*img.rows,
         })
       }
     }
