@@ -13,6 +13,7 @@ var ObjDetect = require('.')
   var objdetect = await ObjDetect()
 
   var imgsrc = await cv.imreadAsync(`/var/store/test/truck1-1.jpg`)
+  //var imgsrc = await cv.imreadAsync(`./in2.png`)
 
   var objs
   console.time('time')

@@ -70,7 +70,7 @@ module.exports = async function (opt = {}) {
     var target_h = Math.floor(height * ratio)
     var target_w = Math.floor(width * ratio)
 
-    var resized = await img.resizeAsync(target_h, target_w, 1, 1, cv.INTER_LINEAR)
+    var resized = await img.resizeAsync(target_h, target_w, 1, 1, cv.INTER_AREA)
     return {
       data: resized.getData(), 
       height: resized.rows, 
